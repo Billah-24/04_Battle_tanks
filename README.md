@@ -1,7 +1,12 @@
 # 04_Battle_tanks
 Tank fighting Game learning C++ and UnrealEngine
 
---markdown ["] will do linking"](https://www.google.com)
+
+#Sidenote.
+
+##markdown cheat sheet
+
+[[ will do linking](https://www.google.com)
 * star
 * will
 * make 
@@ -9,5 +14,5 @@ Tank fighting Game learning C++ and UnrealEngine
 * list
 
 # #makes 
-## differnt header 
-### sizes 
+## ##differnt header 
+### ###sizes 
