@@ -21,7 +21,7 @@ void ATankAIController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AIController has control: %s"), *(ControlledTank->GetName()));
+		//UE_LOG(LogTemp, Warning, TEXT("AIController has control: %s"), *(ControlledTank->GetName()));
 		
 	}
 	auto PlayerTank = GetPlayerTank();
@@ -31,8 +31,20 @@ void ATankAIController::BeginPlay()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("AI found Player controlling: %s"), *(PlayerTank->GetName()));
+	//	UE_LOG(LogTemp, Warning, TEXT("AI tank : %s found Player controlling: %s"), *(ControlledTank->GetName()),*(PlayerTank->GetName()));
+	
+		AimAtPlayer();
+		//UE_LOG(LogTemp, Warning, TEXT("AI tank : %s is Aiming at Player controlling: %s"), *(ControlledTank->GetName()), *(PlayerTank->GetName()));
 	}
+}
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	if (GetPlayerTank())
+	{
+		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+	}
+	
 }
 
 ATank* ATankAIController::GetControlledTank() const
@@ -46,5 +58,17 @@ ATank* ATankAIController::GetPlayerTank() const
 	if (!PlayerPawn) { return nullptr; }
 	
 	return Cast<ATank>(PlayerPawn);
+
+}
+void ATankAIController::AimAtPlayer()
+{
+	if (!GetControlledTank())
+	{
+		return;
+	}
+	
+	//UE_LOG(LogTemp, Warning, TEXT("AI should be aiming"));
+	GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
+	
 
 }
