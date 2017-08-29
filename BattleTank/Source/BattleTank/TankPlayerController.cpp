@@ -5,6 +5,7 @@
 
 #include "TankPlayerController.h"
 #include "BattleTank.h"
+#include "TankAimingComponent.h"
 #include "Tank.h"
 
 #define OUT

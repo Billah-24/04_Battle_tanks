@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "TankAimingComponent.h"
 #include "AIController.h"
 #include "Tank.h"
 

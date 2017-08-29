@@ -18,7 +18,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UStaticMeshComponent* BarrelToSet);
-
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float LaunchSpeed = 100000; //starting value in cata firing..
 protected:
 	UTankAimingComponent* TankAimingComponent= nullptr;
 	UStaticMeshComponent* Barrel = nullptr;
@@ -26,6 +27,7 @@ private:
 
 	// Sets default values for this pawn's properties
 	ATank();
+
 
 
 	// Called when the game starts or when spawned
@@ -36,7 +38,8 @@ private:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+	
+	
 	
 	
 };

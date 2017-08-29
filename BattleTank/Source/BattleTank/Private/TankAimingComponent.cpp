@@ -4,7 +4,9 @@
 
 #include "TankAimingComponent.h"
 #include "GameFramework/Actor.h"
-//#include "Runtime/Engine/Classes/Components/SceneComponent.h"
+//#include "Components/ActorComponent.h"
+#include  "Classes/Engine/Engine.h"
+#include "Classes/Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
 
 
@@ -37,21 +39,30 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 	// ...
 }
-void UTankAimingComponent::AimAt(FVector HitLocation)
+void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 {
 	auto OurTankName = GetOwner()->GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test.. barrelLocation next... "),*OurTankName);
-	UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s "), *OurTankName, *HitLocation.ToString());
+/*	
+	FString BarrelLocation = "";
+	if (Barrel)
+	{
+		BarrelLocation = Barrel->GetComponentLocation().ToString();
+		UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test.. if barrelLocation complete... "),*OurTankName);
+	}
 	//check(Barrel);
-//	auto BarrelLocation = Barrel->GetComponentLocation().ToString();
+*/
+	//UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s "), *OurTankName, *HitLocation.ToString());
 	//UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s "), *OurTankName, *HitLocation.ToString(), *BarrelLocation);
-
+	//GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("%s aiming at %s from %s"), *OurTankName, *HitLocation.ToString(),*BarrelLocation));
+	UE_LOG(LogTemp, Warning, TEXT("%s is Firing at %f "), *OurTankName, LaunchSpeed);
 }
 void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet) 
 {
 	Barrel = BarrelToSet;
-	FString BarrelName = BarrelToSet->GetFName().ToString();
-	FString BarrelLocation = BarrelToSet->GetSocketLocation("TubeAsmbly").ToString();
-	GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("Barrel Name: %s  Barrel Location: %s"), *BarrelName, *BarrelLocation));
-
+	if (Barrel)
+	{
+		FString BarrelName = BarrelToSet->GetFName().ToString();
+		FString BarrelLocation = BarrelToSet->GetSocketLocation("Barrel").ToString();
+		//GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("Barrel Name: %s  Barrel Location: %s"), *BarrelName, *BarrelLocation));
 	}
+}
