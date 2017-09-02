@@ -7,6 +7,7 @@
 //#include "Components/ActorComponent.h"
 #include  "Classes/Engine/Engine.h"
 #include "TankBarrel.h"
+#include "Tank.h"
 #include "Classes/Components/SceneComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
@@ -18,7 +19,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true; // TODO shoudl this tick
 
 	// ...
 }
@@ -47,12 +48,17 @@ void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 		);
 		if(bHaveFiringSolution)
 		{
-		
-		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
-		MoveBarrel(AimDirection);
-		//UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test..movebarrel At %s complete... "),*OurTankName, *AimDirection.ToString());
+			auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+			MoveBarrel(AimDirection);
+			//UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test..movebarrel At %s complete... "),*OurTankName, *AimDirection.ToString());
+			auto Time = GetWorld()->GetTimeSeconds();
+			UE_LOG(LogTemp, Warning, TEXT("%f: Move Barrel AimDirection found"), Time);
 		}
-	
+		else
+		{
+			auto Time = GetWorld()->GetTimeSeconds();
+			UE_LOG(LogTemp, Warning, TEXT("%f: No aim found"), Time);
+		}
 	}
 
 	//check(Barrel);
@@ -79,6 +85,6 @@ void UTankAimingComponent::MoveBarrel(FVector TargetLocation)
 	auto AimRotator = TargetLocation.Rotation();
 	auto DeltaRotator = AimRotator - BarrelRotator;
 
-	UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s   AimRotator: %s   Delta: %s"), *BarrelRotator.ToString(), *AimRotator.ToString(), *DeltaRotator.ToString());
+//	UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s   AimRotator: %s   Delta: %s"), *BarrelRotator.ToString(), *AimRotator.ToString(), *DeltaRotator.ToString());
 	Barrel->Elevate(5);
 }
