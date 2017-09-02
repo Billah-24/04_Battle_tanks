@@ -6,7 +6,9 @@
 #include "GameFramework/Actor.h"
 //#include "Components/ActorComponent.h"
 #include  "Classes/Engine/Engine.h"
+#include "TankBarrel.h"
 #include "Classes/Components/SceneComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Components/StaticMeshComponent.h"
 
 
@@ -21,48 +23,62 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-
-// Called when the game starts
-void UTankAimingComponent::BeginPlay()
-{
-	Super::BeginPlay();
-
-	// ...
-	
-}
-
-
-// Called every frame
-void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
 void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 {
 	auto OurTankName = GetOwner()->GetName();
-/*	
+
 	FString BarrelLocation = "";
+	if (!Barrel) { return; }
+
 	if (Barrel)
 	{
-		BarrelLocation = Barrel->GetComponentLocation().ToString();
-		UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test.. if barrelLocation complete... "),*OurTankName);
+		FVector OutLaunchVelocity;
+		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+		//BarrelLocation = Barrel->GetComponentLocation().ToString();
+		//Calco outvelocity
+		bool bHaveFiringSolution = UGameplayStatics::SuggestProjectileVelocity
+		(
+			this,
+			OutLaunchVelocity,
+			StartLocation,
+			HitLocation,
+			LaunchSpeed,
+			ESuggestProjVelocityTraceOption::DoNotTrace
+		);
+		if(bHaveFiringSolution)
+		{
+		
+		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
+		MoveBarrel(AimDirection);
+		//UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test..movebarrel At %s complete... "),*OurTankName, *AimDirection.ToString());
+		}
+	
 	}
+
 	//check(Barrel);
-*/
 	//UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s "), *OurTankName, *HitLocation.ToString());
 	//UE_LOG(LogTemp, Warning, TEXT("%s aiming at %s from %s "), *OurTankName, *HitLocation.ToString(), *BarrelLocation);
 	//GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("%s aiming at %s from %s"), *OurTankName, *HitLocation.ToString(),*BarrelLocation));
-	UE_LOG(LogTemp, Warning, TEXT("%s is Firing at %f "), *OurTankName, LaunchSpeed);
+	//UE_LOG(LogTemp, Warning, TEXT("%s is Firing at %f "), *OurTankName, LaunchSpeed);
 }
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet) 
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet) 
 {
 	Barrel = BarrelToSet;
+	if (!Barrel) { return; }
 	if (Barrel)
 	{
 		FString BarrelName = BarrelToSet->GetFName().ToString();
 		FString BarrelLocation = BarrelToSet->GetSocketLocation("Barrel").ToString();
 		//GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("Barrel Name: %s  Barrel Location: %s"), *BarrelName, *BarrelLocation));
 	}
+}
+void UTankAimingComponent::MoveBarrel(FVector TargetLocation)
+{
+	//calc difreence between current direction and then new 
+	auto BarrelRotator = Barrel->GetForwardVector().Rotation();
+	auto AimRotator = TargetLocation.Rotation();
+	auto DeltaRotator = AimRotator - BarrelRotator;
+
+	UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s   AimRotator: %s   Delta: %s"), *BarrelRotator.ToString(), *AimRotator.ToString(), *DeltaRotator.ToString());
+	Barrel->Elevate(5);
 }
