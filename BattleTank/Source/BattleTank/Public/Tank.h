@@ -9,6 +9,7 @@
 
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 class UTankAimingComponent;
 
 UCLASS()
@@ -48,7 +49,8 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float LaunchSpeed = 4000; //starting value in cata firing..
-	
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
 	
 	
 };
