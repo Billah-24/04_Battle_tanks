@@ -61,8 +61,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 			auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 			MoveBarrel(AimDirection);
 		//	UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test..movebarrel At %s complete... "),*OurTankName, *AimDirection.ToString());
-			auto Time = GetWorld()->GetTimeSeconds();
-			UE_LOG(LogTemp, Warning, TEXT("%f: Move Barrel AimDirection found"), Time);
+		//	auto Time = GetWorld()->GetTimeSeconds();
+		//	UE_LOG(LogTemp, Warning, TEXT("%f: Move Barrel AimDirection found"), Time);
 		}
 		else
 		{
