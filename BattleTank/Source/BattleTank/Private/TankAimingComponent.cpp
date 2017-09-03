@@ -7,6 +7,8 @@
 #include "Components/ActorComponent.h"
 #include  "Classes/Engine/Engine.h"
 #include "TankBarrel.h"
+#include "Engine/World.h"
+#include "TankTurret.h"
 #include "Tank.h"
 #include "Classes/Components/SceneComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -19,7 +21,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true; // TODO shoudl this tick
+	PrimaryComponentTick.bCanEverTick = false; 
 
 	// ...
 }
@@ -58,7 +60,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 		{
 			auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 			MoveBarrel(AimDirection);
-			//UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test..movebarrel At %s complete... "),*OurTankName, *AimDirection.ToString());
+		//	UE_LOG(LogTemp, Warning, TEXT("%s: AimAt test..movebarrel At %s complete... "),*OurTankName, *AimDirection.ToString());
 			auto Time = GetWorld()->GetTimeSeconds();
 			UE_LOG(LogTemp, Warning, TEXT("%f: Move Barrel AimDirection found"), Time);
 		}
@@ -77,14 +79,29 @@ void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 }
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet) 
 {
+	if (!BarrelToSet) { return; }
 	Barrel = BarrelToSet;
-	if (!Barrel) { return; }
-	if (Barrel)
+	
+/*	if (Barrel)
 	{
 		FString BarrelName = BarrelToSet->GetFName().ToString();
 		FString BarrelLocation = BarrelToSet->GetSocketLocation("Barrel").ToString();
 		//GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("Barrel Name: %s  Barrel Location: %s"), *BarrelName, *BarrelLocation));
 	}
+	*/
+}
+void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet) 
+{
+	if (!TurretToSet) { return; }
+	Turret = TurretToSet;
+	
+	/*if (Turret)
+	{
+		FString TurretName = TurretToSet->GetFName().ToString();
+		FString TurretLocation = TurretToSet->GetSocketLocation("Turret").ToString();
+		//GEngine->AddOnScreenDebugMessage(-1, 100.0f, FColor::Green, FString::Printf(TEXT("Turret Name: %s  Turret Location: %s"), *TurretName, *TurretLocation));
+	}
+	*/
 }
 void UTankAimingComponent::MoveBarrel(FVector TargetLocation)
 {
@@ -93,6 +110,7 @@ void UTankAimingComponent::MoveBarrel(FVector TargetLocation)
 	auto AimRotator = TargetLocation.Rotation();
 	auto DeltaRotator = AimRotator - BarrelRotator;
 
-//	UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s   AimRotator: %s   Delta: %s"), *BarrelRotator.ToString(), *AimRotator.ToString(), *DeltaRotator.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s   AimRotator: %s   Delta: %s"), *BarrelRotator.ToString(), *AimRotator.ToString(), *DeltaRotator.ToString());
 	Barrel->Elevate(DeltaRotator.Pitch);
+	Turret->Rotate(DeltaRotator.Yaw);
 }

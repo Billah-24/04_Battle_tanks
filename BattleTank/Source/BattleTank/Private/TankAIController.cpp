@@ -4,7 +4,9 @@
 
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
+#include "Components/ActorComponent.h"
 #include "BattleTank.h"
+#include "Engine/World.h"
 #include "Tank.h"
 
 
@@ -22,7 +24,7 @@ void ATankAIController::BeginPlay()
 	}
 	else
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("AIController has control: %s"), *(ControlledTank->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("AIController has control: %s"), *(ControlledTank->GetName()));
 		
 	}
 	auto PlayerTank = GetPlayerTank();

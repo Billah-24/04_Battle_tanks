@@ -8,6 +8,7 @@
 #include "Tank.generated.h"
 
 class UTankBarrel;
+class UTankTurret;
 class UTankAimingComponent;
 
 UCLASS()
@@ -21,14 +22,15 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = Setup)
 	void SetBarrelReference(UTankBarrel* BarrelToSet);
-	
-	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 100000; //starting value in cata firing..
+	UFUNCTION(BlueprintCallable)
+	void SetTurretReference(UTankTurret* TurretToSet);
+
 
 protected:
 
 	UTankAimingComponent* TankAimingComponent= nullptr;
 	UTankBarrel* Barrel = nullptr;
+	UTankTurret* Turret = nullptr;
 
 private:
 
@@ -40,7 +42,8 @@ private:
 	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+	UPROPERTY(EditAnywhere, Category = Firing)
+	float LaunchSpeed = 4000; //starting value in cata firing..
 	
 	
 	
