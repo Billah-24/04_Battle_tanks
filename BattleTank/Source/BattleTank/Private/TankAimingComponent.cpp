@@ -4,7 +4,7 @@
 
 #include "TankAimingComponent.h"
 #include "GameFramework/Actor.h"
-//#include "Components/ActorComponent.h"
+#include "Components/ActorComponent.h"
 #include  "Classes/Engine/Engine.h"
 #include "TankBarrel.h"
 #include "Tank.h"
@@ -27,7 +27,8 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 {
 	auto OurTankName = GetOwner()->GetName();
-
+		TArray<AActor*> ActorIgnoreList;
+		ActorIgnoreList.Add(GetOwner());
 	FString BarrelLocation = "";
 	if (!Barrel) { return; }
 
@@ -35,6 +36,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 	{
 		FVector OutLaunchVelocity;
 		FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+
 		//BarrelLocation = Barrel->GetComponentLocation().ToString();
 		//Calco outvelocity
 		bool bHaveFiringSolution = UGameplayStatics::SuggestProjectileVelocity
@@ -44,7 +46,13 @@ void UTankAimingComponent::AimAt(FVector HitLocation,float LaunchSpeed)
 			StartLocation,
 			HitLocation,
 			LaunchSpeed,
+			false,
+			0.0f,
+			0,
 			ESuggestProjVelocityTraceOption::DoNotTrace
+		//	FCollisionResponseParams::DefaultResponseParam,
+		//	ActorIgnoreList,
+		//	true
 		);
 		if(bHaveFiringSolution)
 		{
@@ -86,5 +94,5 @@ void UTankAimingComponent::MoveBarrel(FVector TargetLocation)
 	auto DeltaRotator = AimRotator - BarrelRotator;
 
 //	UE_LOG(LogTemp, Warning, TEXT("BarrelRotator: %s   AimRotator: %s   Delta: %s"), *BarrelRotator.ToString(), *AimRotator.ToString(), *DeltaRotator.ToString());
-	Barrel->Elevate(5);
+	Barrel->Elevate(DeltaRotator.Pitch);
 }

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
-#include "BattleTank.h"
 #include "TankBarrel.generated.h"
 
 /**
@@ -23,9 +22,9 @@ public:
 	
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-	float MaxDegreesPerSecond = 20;
+	float MaxDegreesPerSecond = 5;
 	UPROPERTY(EditAnywhere, Category = Setup)
 	float MaxElevation = 37;
 	UPROPERTY(EditAnywhere, Category = Setup)
-	float MinElevation = -1;
+	float MinElevation = -0.5;
 };

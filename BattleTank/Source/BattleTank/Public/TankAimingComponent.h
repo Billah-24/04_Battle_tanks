@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
-#include "TankBarrel.h"
 #include "TankAimingComponent.generated.h"
 
 

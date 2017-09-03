@@ -4,7 +4,7 @@
 
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
-//#include "BattleTank.h"
+#include "BattleTank.h"
 #include "Tank.h"
 
 
