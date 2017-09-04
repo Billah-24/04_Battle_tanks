@@ -48,45 +48,8 @@ void ATankAIController::Tick(float DeltaTime)
 
 	auto PlayerTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 	auto ControlledTank = Cast<ATank>(GetPawn());
-//refacoting
-/*
-	AimAtPlayer();
-	
-	if (GetPlayerTank())
-	{
-		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
-	}
-	
-	*/
+
 	//fire at player
 	ControlledTank->AimAt(PlayerTank->GetActorLocation());
 	ControlledTank->Fire();
 }
-/*
-ATank* ATankAIController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-
-}*/
-/*
-ATank* ATankAIController::GetPlayerTank() const
-{
-	auto PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-	if (!PlayerPawn) { return nullptr; }
-	
-	return Cast<ATank>(PlayerPawn);
-
-}*/
-/*
-void ATankAIController::AimAtPlayer()
-{
-	if (!GetControlledTank())
-	{
-		return;
-	}
-	
-	//UE_LOG(LogTemp, Warning, TEXT("AI should be aiming"));
-	GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation());
-
-}
-*/
