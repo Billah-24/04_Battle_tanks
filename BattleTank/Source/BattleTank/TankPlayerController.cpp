@@ -2,6 +2,7 @@
 
 #include "TankPlayerController.h"
 #include "BattleTank.h"
+#include "Engine/World.h"
 #include "TankAimingComponent.h"
 #include "Tank.h"
 
@@ -89,6 +90,7 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVector& outHitLocation) const
 {
 	FHitResult LineTraceHitResult;
+	FVector LastResult = FVector(0.0);
 	auto StartLocation = PlayerCameraManager->GetCameraLocation();
 	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
 		if(GetWorld()->LineTraceSingleByChannel(
@@ -98,9 +100,10 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 			ECollisionChannel::ECC_Visibility))
 		{
 			outHitLocation = LineTraceHitResult.Location;
+			LastResult = LineTraceHitResult.Location;
 			return true;
 		}
-		outHitLocation = FVector (0.0);
+		outHitLocation = LastResult;
 		return false;
  
 }

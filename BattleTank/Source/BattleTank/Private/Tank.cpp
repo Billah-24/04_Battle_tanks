@@ -54,13 +54,14 @@ void ATank::Fire()
 {
 	//auto OurTankName = GetOwner()->GetName();
 	if (!Barrel) { return; }
-	auto Time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT(": %f: Fire complete... "), Time);
+//	auto Time = GetWorld()->GetTimeSeconds();
+//	UE_LOG(LogTemp, Warning, TEXT(": %f: Fire complete... "), Time);
 
 	//spawn projectile at sockkect
-	GetWorld()->SpawnActor<AProjectile>(
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 		ProjectileBlueprint,
 		Barrel->GetSocketLocation(FName("Projectile")),
 		Barrel->GetSocketRotation(FName("Projectile"))
 		);
+	Projectile->LaunchProjectile(LaunchSpeed);
 }
