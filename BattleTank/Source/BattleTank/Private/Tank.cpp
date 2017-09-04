@@ -53,6 +53,8 @@ void ATank::SetTurretReference(UTankTurret* TurretToSet)
 void ATank::Fire() 
 {
 	//auto OurTankName = GetOwner()->GetName();
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+
 	if (!Barrel) { return; }
 //	auto Time = GetWorld()->GetTimeSeconds();
 //	UE_LOG(LogTemp, Warning, TEXT(": %f: Fire complete... "), Time);
